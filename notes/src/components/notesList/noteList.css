@@ -1,0 +1,10 @@
+.notes_container {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+}
+.notes_settings {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
