@@ -1,4 +1,7 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { GoogleAuthProvider, createUserWithEmailAndPassword,
+    signInWithPopup,
+    signInWtihEmailAndPassword,
+ } from 'firebase/auth';
 import { auth } from './firebase';
 
 

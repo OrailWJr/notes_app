@@ -1,7 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { UserAuth } from '../components/context/authContext'; 
 
 const SignUp = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+
+    const {createUser} = UserAuth()
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        setError('')
+        try{
+        await createUser(email, password)
+        }catch (e) {
+            setError(e.message)
+            console.log(e.message)
+        }
+
+    }
   return (
     <div>
         <div>
@@ -18,7 +36,7 @@ const SignUp = () => {
                 <label >Password</label>
                 <input type='password'/> 
             </div>
-            <button>Sign Up</button>
+            <button action="button" >Sign Up</button>
         </form>
 
     </div>
