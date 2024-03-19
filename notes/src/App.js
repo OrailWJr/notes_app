@@ -12,15 +12,16 @@ import { ProtectedRoute } from './components/protectedRoute.js';
 import { auth } from './components/firebase/firebase.js';
 
 function App() {
-  const [user, setUser] = useState(null)
-  const [isFetching, setIsFetching] = useState('true')
+  const [user, setUser] = useState(null);
+  const [isFetching, setIsFetching] = useState('true');
   console.log('initial user', user)
+  
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user)=> {
       if (user) {
         setUser(user)
         setIsFetching(false)
-        console.log(user)
+        console.log('setting user to user ', user)
         return;
       }
       setUser(null);
@@ -34,18 +35,22 @@ function App() {
   if(isFetching) {
     return <h2>Loading...</h2>
   }
+  {console.log('user in routes', user)}
   return (
 
-      
+    <BrowserRouter>
         <Routes>
-          <Route path='/signin' user={user} element={<SignIn />} />
-          <Route path='/home' element={
+          
+          <Route index path='/signin'  element={<SignIn user={user}/>} />
+          <Route 
+              path='/home' element={
               <ProtectedRoute user={user}>
-                <Home></Home>
+                <Home user={user}></Home>
                 </ProtectedRoute>} />
           {/* <Route path='/signup' element={<SignUp />} />
           <Route path='/home' element={<Home />} /> */}
         </Routes> 
+        </BrowserRouter>
 
     
   )

@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-
+import { getDatabase } from "firebase/database";
 // const auth = getAuth(app);
 
 
@@ -37,13 +37,14 @@ const firebaseConfig = {
   storageBucket: "orail-notes-app.appspot.com",
   messagingSenderId: "210732069105",
   appId: "1:210732069105:web:a984cff730cefc8125b950",
-  measurementId: "G-1J9YG288TY"
+  measurementId: "G-1J9YG288TY",
+  databaseURL: "https://DATABASE_NAME.firebaseio.com",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-
+export const database = getDatabase(app);
 // authenticate user 
 
 

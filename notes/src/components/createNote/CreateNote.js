@@ -3,15 +3,23 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import { useState } from 'react';
+import { database } from '../firebase/firebase';
+import { ref, set } from 'firebase/database';
 
+const CreateNote = ({user}) => {
 
-const CreateNote = () => {
 
     const [note, setNote] = useState('')
     const [saveNote, setSaveNote] = useState({})
 
+    function writeUserData(userId, email) {
+      console.log("checking",userId, email)
+      set(ref(database, 'users/' + userId), {
+        email: email,
+      });
+    }
     console.log(note)
-    console.log(saveNote)
+    console.log(user.user.uid)
   return (
 
     <Box
@@ -29,7 +37,7 @@ const CreateNote = () => {
           defaultValue="Write a Note.."
         />
         <Button onClick={() =>{
-            setSaveNote({...saveNote, "note Message": note})
+            writeUserData(user.user.uid, user.user.email)
         }} variant="contained">Save</Button>
     </Box>
     

@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
 
 export const ProtectedRoute = ({ children, user}) => {
+    console.log('Im at protected routes', children, user)
     return user ? children : <Navigate to='/signin'></Navigate>
 }

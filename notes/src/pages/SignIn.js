@@ -21,7 +21,6 @@ const SignIn = ({user}) => {
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
-            console.log(user)
         }).catch((error) => {
             const errCode = error.code;
             const errMessage = error.message;
@@ -34,7 +33,6 @@ const SignIn = ({user}) => {
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
-            console.log(user)
         }).catch((error) => {
             const errCode = error.code;
             const errMessage = error.message;
@@ -46,7 +44,7 @@ const SignIn = ({user}) => {
         console.log('this is user', user)
         return <Navigate to='/home'> </Navigate>
     }
-
+    console.log('sigin page user testing ', user)
   return (
     <div>
         { !isSignUpActive && 
