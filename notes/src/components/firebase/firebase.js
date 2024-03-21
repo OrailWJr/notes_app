@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import { collection, getDocs } from 'firebase/firestore/lite';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { getDatabase } from "firebase/database";
+import { getFirestore } from "firebase/firestore";
 // const auth = getAuth(app);
 
 
@@ -31,20 +31,20 @@ import { getDatabase } from "firebase/database";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAnbsNxwVjLWT-KiIdMS-Rn-cCFJhxZCmI",
-  authDomain: "orail-notes-app.firebaseapp.com",
-  projectId: "orail-notes-app",
-  storageBucket: "orail-notes-app.appspot.com",
-  messagingSenderId: "210732069105",
-  appId: "1:210732069105:web:a984cff730cefc8125b950",
-  measurementId: "G-1J9YG288TY",
-  databaseURL: "https://DATABASE_NAME.firebaseio.com",
+    apiKey: "AIzaSyD1YwhL5JQv6lZ_SBJje2nrCGt5I6Nq2RA",
+    authDomain: "notesapp2-d7719.firebaseapp.com",
+    projectId: "notesapp2-d7719",
+    storageBucket: "notesapp2-d7719.appspot.com",
+    messagingSenderId: "724175799890",
+    appId: "1:724175799890:web:3a64965d05376e47fec18b",
+    measurementId: "G-44S4V6K0BS",
+    databaseURL: "https://DATABASE_NAME.firebaseio.com",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const database = getDatabase(app);
+export const database = getFirestore(app);
 // authenticate user 
 
 

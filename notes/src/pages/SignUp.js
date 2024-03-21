@@ -1,46 +1,67 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { UserAuth } from '../components/context/authContext'; 
+import React, { useState } from 'react';
+import { Container, Typography, TextField, Button, Grid, Link } from '@mui/material'; // Import Material-UI components
 
-const SignUp = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+function SignInMui(user) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-    const {createUser} = UserAuth()
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Perform login authentication or validation here
+    console.log('Email:', email);
+    console.log('Password:', password);
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        setError('')
-        try{
-        await createUser(email, password)
-        }catch (e) {
-            setError(e.message)
-            console.log(e.message)
-        }
-
-    }
   return (
-    <div>
-        <div>
-            <h1>Sign Up for your free Notes App</h1>
-            <p>Already have an account? <Link to='/SignIn' className='underline'> Sign In </Link></p>
-        </div>
-
-        <form>
-            <div>
-                <label >Email Address</label>
-                <input type='email'/> 
-            </div>
-            <div>
-                <label >Password</label>
-                <input type='password'/> 
-            </div>
-            <button action="button" >Sign Up</button>
+    <Container component="main" maxWidth="xs">
+      <div>
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign In
+          </Button>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <Link href="#" variant="body2">
+                Forgot password?
+              </Link>
+            </Grid>
+          </Grid>
         </form>
-
-    </div>
-  )
+      </div>
+    </Container>
+  );
 }
 
-export default SignUp
+export default SignInMui;

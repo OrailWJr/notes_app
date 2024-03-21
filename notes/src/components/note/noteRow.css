@@ -2,10 +2,55 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 50px;
-    border-bottom: 2px solid whitesmoke;
-    z-index: 999;
+    /* min-height: 50px; Changed from fixed height to minimum height */
+    border-bottom: 2px solid #f5f5f5; /* Changed color to a hex value */
+    z-index: 1; /* Changed from 999 to 1 */
 }
+
+.note_settings_left {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+}
+
+.note_snippet > input {
+    width: 100%; /* Changed from fixed width to full width * /* Set button color to blue */
+    margin: 5px; /* Add a little bit of space around buttons */
+    min-height: 50px; /* Changed from fixed height to minimum height */
+    border: none;
+    outline: none;
+    resize: none; /* Disabled resizing */
+    padding: 0 10px; /* Added padding */
+    font-size: 16px; /* Added font size */
+}
+
+/* .note_row button {
+    background-color: blue; 
+    color: white; 
+    border: none; 
+    padding: 10px 20px; 
+    margin: 5px; 
+    cursor: pointer; 
+    border-radius: 5px; 
+  } */
+
+/* .note_row button:hover {
+  background-color: darkblue; 
+} */
+
+.note_row-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin-right: 10px; /* Added margin to the right */
+}
+
+/* .note_row-star {
+  color: goldenrod;
+  cursor: pointer;
+  margin-left: 10px; /* Added margin to the left 
+} */
 
 /* .note_settings_left {
     /* display: flex;

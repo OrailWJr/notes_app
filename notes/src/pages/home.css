@@ -1,0 +1,30 @@
+
+/* .home-container {
+    display: flex;
+    /* flex-direction: column;
+    justify-content: space-between;
+    height: 100vh; 
+    padding: 20px; 
+  } */
+  
+  .home-notes {
+    display: flex;
+  }
+  .home-container > button {
+    align-self: center; 
+    margin-top: auto; 
+    align-self: start;
+  }
+
+  .home-notes-container {
+    display: flex;
+  }
+  
+  .largeElement {
+    flex: 2; /* Takes up 2 parts of the space */
+  }
+  
+  .smallElement {
+    flex: 1; /* Takes up 1 part of the space */
+    padding: 5px;
+  }
