@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import NotesList from '../components/notesList/notesList';
 import CreateNote from '../components/createNote/CreateNote';
-import { signOut } from 'firebase/auth';
-import { auth, database } from '../components/firebase/firebase';
+import { database } from '../components/firebase/firebase';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import './home.css'
+import Header from '../components/header/header';
+
 
 
 
@@ -21,6 +22,7 @@ const Home = ({ user }) => {
         id: doc.id,
         ...doc.data()
       }));
+      console.log('useEffect Fired')
       setNotes(notesArray);
     }, (error) => {
       console.error('Snapshot listening error:', error);
@@ -30,8 +32,9 @@ const Home = ({ user }) => {
   }, [user.uid]); // Dependency array includes user.uid to re-run effect if user changes
 
   return (
-
-    <div className="home-container">
+    <div className="home-main-container">
+      <Header />
+      <div className="home-container">
       
       <div className='home-notes-container'>
         <div className="smallElement">
@@ -48,6 +51,8 @@ const Home = ({ user }) => {
       
      
     </div>
+    </div>
+    
   );
 };
 

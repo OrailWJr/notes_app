@@ -11,6 +11,8 @@ import { ProtectedRoute } from './components/protectedRoute.js';
 import { auth } from './components/firebase/firebase.js';
 import SignInMui from './pages/SignUp.js'; 
 import Header from './components/header/header.js';
+
+
 function App() {
   const [user, setUser] = useState(null);
   const [isFetching, setIsFetching] = useState('true');
@@ -37,7 +39,6 @@ function App() {
   return (
 
     <BrowserRouter>
-    <Header user={user}/>
         <Routes>
           <Route index path='/signup'  element={<SignInMui user={user}/>} />
           <Route index path='/signin'  element={<SignIn user={user}/>} />

@@ -1,30 +1,68 @@
 import React, { useState } from 'react';
 import { Container, Typography, TextField, Button, Grid, Link } from '@mui/material'; // Import Material-UI components
+import { Navigate } from 'react-router-dom';
+import { createUserWithEmailAndPassword,
+    signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../components/firebase/firebase.js';
 
-function SignInMui(user) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Perform login authentication or validation here
-    console.log('Email:', email);
-    console.log('Password:', password);
-  };
+function SignInMui({user}) {
+    const [isSignUpActive, setIsSignUpActive] = useState(false);
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    
+    const handleSignUpIsActive = () => {
+        setIsSignUpActive(!isSignUpActive)
+    }
+    
+    const handleSignUp = () => {
+        if (!email || !password ) return;
+        createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+        }).catch((error) => {
+            const errCode = error.code;
+            const errMessage = error.message;
+            console.log(errCode, errMessage)
+        })
+    }
+
+    const handleSignIn = () => {
+        if (!email || !password ) return;
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+        }).catch((error) => {
+            const errCode = error.code;
+            const errMessage = error.message;
+            console.log(errCode, errMessage)
+        })
+    }
+
+    if (user) {
+      return <Navigate to='/home'> </Navigate>
+  }
 
   return (
     <Container component="main" maxWidth="xs">
       <div>
+      { !isSignUpActive && 
         <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form onSubmit={handleSubmit}>
+          Welcome Back to Notes!
+        </Typography>}
+        { isSignUpActive && 
+        <Typography component="h1" variant="h5">
+          Sign Up For Notes!
+        </Typography>}
+
+        <form >
           <TextField
             margin="normal"
             required
             fullWidth
             id="email"
-            label="Email Address"
+            // label="Email Address"
+            placeholder='Email'
             name="email"
             autoComplete="email"
             autoFocus
@@ -36,26 +74,53 @@ function SignInMui(user) {
             required
             fullWidth
             name="password"
-            label="Password"
+            placeholder='Password'
             type="password"
             id="password"
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+        { !isSignUpActive &&   
           <Button
-            type="submit"
+            type="button"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            onClick={handleSignIn}
           >
             Sign In
-          </Button>
-          <Grid container justifyContent="flex-end">
+          </Button>}
+          { isSignUpActive &&   
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleSignUp}
+          >
+            Create Account
+          </Button>}
+
+          <Grid container justifyContent="space-between">
+          { !isSignUpActive &&  
             <Grid item>
-              <Link href="#" variant="body2">
+              <Button typeof='button' size='small' onClick={handleSignUpIsActive}>
+                Sign Up
+              </Button>
+            </Grid>}
+            { isSignUpActive &&  
+            <Grid item>
+              <Button size='small' type="button" onClick={handleSignUpIsActive}>
+                Already have an Account?
+              </Button>
+            </Grid>}
+
+
+            <Grid item>
+            <Button size='small' type='button' >
                 Forgot password?
-              </Link>
+              </Button>
             </Grid>
           </Grid>
         </form>
