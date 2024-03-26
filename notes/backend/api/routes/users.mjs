@@ -1,20 +1,35 @@
-import { Router, response} from 'express';
-import { query, validationResult, body } from 'express-validator';
+import { Router} from 'express';
+import { query, validationResult, body, matchedData, checkSchema} from 'express-validator';
+import { createUserValidationSchema } from '../../utils/validationSchemas.mjs';
+import mockUsers from '../../utils/mockData.mjs';
 
-
-const mockUsers = [
-    {id:1, username:"CropOriginal", lname: "cropGhost"},
-    {id:2, username:"Orail", lname: "adeame"},
-    {id:3, username:"Tester 2 ", lname: "chester"},
-    {id:4, username:"pmoney", lname: "white"},
-]
 const router = Router();
 
-router.get('/api/users', (req, res) =>{
+const resolveIndexByUserId = (req, res, next) => {
+    const {
+        params: {id},
+    } = req;
+    const parsedId = parseInt(id);
+    if (isNaN(parsedId)) return res.sendStatus(400)
+    const userIndex = mockUsers.findIndex((user) => user.id === parsedId);
+    if (userIndex === -1) return res.sendStatus(404)
+    req.userIndex = userIndex;
+    next();
+}
+router.get('/api/users', query('filter')
+        .isString()
+        .notEmpty()
+        .withMessage('Must not be empty')
+        .isLength({min:3, max:10})
+        .withMessage('must be between 3 and 10 characters'),
+         (req, res) =>{
+            const result = validationResult(req)
+            console.log(result)
     const {
         query: {filter, value}
     } = req;
- 
+    console.log(req.session);
+    console.log(req.session.id)
     if (filter && value ) return res.send(
         mockUsers.filter((user) => 
             user[filter].includes(value)
@@ -23,27 +38,34 @@ router.get('/api/users', (req, res) =>{
     return res.send(mockUsers)
 })
 
-router.post('/api/users', (req, res) => {
-    console.log(req.body)
+router.post('/api/users/', 
+checkSchema(createUserValidationSchema),  
+    (req, res) => {
+    const result = validationResult(req)
+    if (!result.isEmpty())
+        return res.status(400).send({ errors: result.array()});
+
+    const data = matchedData(req)
+    console.log('this is Data', data);
+
     const { body } = req;
     const newUser = { id: mockUsers[mockUsers.length - 1].id +1, ...body };
     mockUsers.push(newUser);
-    console.log(mockUsers);
     return res.status(201).send(newUser)
 });
 
-router.put('api/users/:id', (req, res) =>{
-    
+router.put('/api/users/:id', resolveIndexByUserId, (req, res) =>{
+    const {body, userIndex} = req;
+    mockUsers[userIndex] = { id: mockUsers[userIndex].id, ...body}
+    return res.send(200);
 })
 
 
-router.get('/api/users/:id', (req, res) => {
-    const parsedId = parseInt(req.params);
-    if (isNaN(parsedId)) 
-        return response.status(400).send({msg : "Bad Request. Invalid Id."});
-    const findUser = mockUsers.find((user) => user.id === parsedId);
-    if (!findUser) return resonse.sendStatus(404);
-    return response.send(findUser)
+router.get('/api/users/:id', resolveIndexByUserId, (req, res) => {
+    const {userIndex} = req;
+    const findUser = mockUsers[userIndex]
+    if (!findUser) return res.sendStatus(404);
+    return res.send(findUser)
 });
 
 export default router;
