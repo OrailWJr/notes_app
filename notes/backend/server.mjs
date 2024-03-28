@@ -4,10 +4,17 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import mockUsers from './utils/mockData.mjs';
 import passport from 'passport';
-
+import './strategies/local-strategy.mjs';
+import mongoose from 'mongoose';
 
 const app = express();
-app.use(express.json());
+
+mongoose
+  .connect("mongodb://localhost/notes_app")
+  .then(() => console.log('connected to database'))
+  .catch((err) => console.log('error:', err))
+
+  app.use(express.json());
 app.use(cookieParser('helloworld'));
 app.use(
   session({
@@ -15,7 +22,7 @@ app.use(
     saveUninitialized: false,
     resave: false,
     cookie: {
-      maxAge: (60000 * 60) * 24,
+      maxAge: 60000,
 
     }
   }));
@@ -33,7 +40,7 @@ app.get('/', (req, res) =>{
   res.send('hello, world')
 })
 
-app.post('/api/auth', (req, res) => {
+app.post('/api/auth', passport.authenticate('local'),(req, res) => {
   const { body: {username, password} } = req;
   const findUser = mockUsers.find((user) => user.username === username)
 
@@ -46,11 +53,16 @@ app.get('/api/auth/status', (req, res) => {
   req.sessionStore.get(req.sessionID, (err, session) => {
     console.log(session)
   })
-  return res.status(200).send(req.session.user)
   
-
+  return req.user ? res.status(200).send(req.user) : res.status(401).send('BAD CREDENTIALS')
 })
 
+app.post('/api/auth/logout', (req, res) => {
+  if (!req.user) return req.status(401).send('NOT AUTHORIZED!')
+  req.logOut((err) => {
+    if (err) return res.sendStatus(401)})
+    return res.sendStatus(200)
+})
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
   console.log('Example ap listening on port 3000')

@@ -1,0 +1,16 @@
+In this file I will describe all the routes and the methods available to those routes. Additionally, 
+what roles are associated with those routes. 
+
+
+Route: '/api/users'
+methods: POST(),
+roles: All roles.
+description: This route will be used to authenticate all user sessions for subsequent routes. 
+
+Route: /api/users/:id
+methods: Post, Patch, Delete, GET 
+roles: authenticated user 
+description: 
+
+
+
