@@ -1,7 +1,9 @@
 import { Router} from 'express';
-import { query, validationResult, body, matchedData, checkSchema} from 'express-validator';
+import { query, validationResult, matchedData, checkSchema} from 'express-validator';
 import { createUserValidationSchema } from '../../utils/validationSchemas.mjs';
 import mockUsers from '../../utils/mockData.mjs';
+import {User} from '../../mongoose/schemas/users.mjs';
+
 
 const router = Router();
 
@@ -40,16 +42,22 @@ router.get('/api/users', query('filter')
 
 router.post('/api/users/', 
 checkSchema(createUserValidationSchema),  
-    (req, res) => {
+    async (req, res) => {
     const result = validationResult(req)
     if (!result.isEmpty())
         return res.status(400).send({ errors: result.array()});
 
     const data = matchedData(req)
-    console.log('this is Data', data);
-
-    const { body } = req;
-    const newUser = { id: mockUsers[mockUsers.length - 1].id +1, ...body };
+        console.log(data)
+    const newUser = new User(data);
+    try {
+        const saveduser = await newUser.save();
+        return res.status(200).send('User has been created');
+    }catch (err){
+        console.log('error is: ', err)
+        return res.status(400).send('User Already Created');
+    }
+   
     mockUsers.push(newUser);
     return res.status(201).send(newUser)
 });

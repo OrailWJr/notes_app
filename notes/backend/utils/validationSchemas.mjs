@@ -17,5 +17,8 @@ export const createUserValidationSchema ={
     },
     lname: {
         notEmpty: true,
+    },
+    password: {
+        notEmpty: true,
     }
 }

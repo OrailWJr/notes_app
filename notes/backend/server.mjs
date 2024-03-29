@@ -41,12 +41,12 @@ app.get('/', (req, res) =>{
 })
 
 app.post('/api/auth', passport.authenticate('local'),(req, res) => {
-  const { body: {username, password} } = req;
-  const findUser = mockUsers.find((user) => user.username === username)
+  // const { body: {username, password} } = req;
+  // const findUser = mockUsers.find((user) => user.username === username)
 
-  if (!findUser || findUser.password != password) return res.status(401).send({msg: 'BAD CREDENTIALS.'})
-  req.session.user = findUser;
-  return res.status(200).send(findUser)
+  // if (!findUser || findUser.password != password) return res.status(401).send({msg: 'BAD CREDENTIALS.'})
+  // req.session.user = findUser;
+  return res.status(200).send("Logged In")
 })
 
 app.get('/api/auth/status', (req, res) => {

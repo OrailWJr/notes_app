@@ -1,17 +1,36 @@
-import { Schema } from "mongoose";
+import mongoose from "mongoose";
 
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
     username: {
-        type: Schema.Types.String,
-        required: true
+        type: mongoose.Schema.Types.String,
+        required: true,
+        unique: true,
     },
     lname: {
-        type: Schema.Types.String,
+        type: mongoose.Schema.Types.String,
         required: true,
     }, 
     password: {
-        type: Schema.Types.String,
+        type: mongoose.Schema.Types.String,
         required: true,
     }
 
-})
+});
+
+// const notesSchema = new Schema({
+//     title: {
+//         type: mongoose.Schema.Types.String,
+//         required: true,
+//     },
+//     date: {
+//         type: mongoose.Schema.Types.Date,
+//     },
+//     note_message: {
+//         type: mongoose.Schema.Types.String,
+//         required: true,
+//     }
+
+// });
+
+// export const Note = mongoose.model('Note', notesSchema);
+export const User = mongoose.model('User', userSchema);
